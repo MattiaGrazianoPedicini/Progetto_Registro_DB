@@ -55,3 +55,72 @@ CREATE TABLE Comporre (
     PRIMARY KEY (Studente_id, Classe_id)
 );
 
+
+INSERT INTO Classe (Nome)
+VALUES ('5A'),
+       ('5B'),
+       ('5C');
+
+INSERT INTO Materia (Nome)
+VALUES
+    ('Matematica'),
+    ('Italiano'),
+    ('Storia'),
+    ('Scienze'),
+    ('Inglese'),
+    ('Arte'),
+    ('Musica'),
+    ('Geografia');
+
+INSERT INTO Prof (Email, Password, Nome, Cognome)
+VALUES
+    ('prof@email.com', 'prof', 'Mattia', 'Pedicini'),
+    ('prof2@email.com', 'prof', 'Laura', 'Grandi');
+
+INSERT INTO Studente (Nome, Cognome)
+VALUES
+    ('Giovanni', 'Verdi'),
+    ('Anna', 'Bianco'),
+    ('Paolo', 'Neri'),
+    ('Laura', 'Russo'),
+    ('Marco', 'Ferrari'),
+    ('Elena', 'Bianchi'),
+    ('Davide', 'Rossi'),
+    ('Francesca', 'Gialli'),
+    ('Luigi', 'Bianchi'),
+    ('Valentina', 'Verdi'),
+    ('Simone', 'Russo'),
+    ('Martina', 'Bianco'),
+    ('Andrea', 'Rossi'),
+    ('Giulia', 'Neri'),
+    ('Alessandro', 'Verdi'),
+    ('Sara', 'Bianchi'),
+    ('Stefano', 'Russo'),
+    ('Chiara', 'Rossi'),
+    ('Fabio', 'Gialli'),
+    ('Elisa', 'Bianchi'),
+    ('Roberto', 'Verdi'),
+    ('Cristina', 'Russo'),
+    ('Nicola', 'Bianco'),
+    ('Serena', 'Rossi'),
+    ('Lorenzo', 'Neri'),
+    ('Federica', 'Verdi'),
+    ('Gabriele', 'Bianchi'),
+    ('Silvia', 'Russo'),
+    ('Enrico', 'Rossi'),
+    ('Alessia', 'Gialli'),
+    ('Matteo', 'Verdi'),
+    ('Valeria', 'Bianchi'),
+    ('Pietro', 'Russo'),
+    ('Camilla', 'Rossi'),
+    ('Daniele', 'Neri'),
+    ('Elena', 'Verdi'),
+    ('Filippo', 'Bianchi'),
+    ('Giorgia', 'Russo'),
+    ('Leonardo', 'Rossi'),
+    ('Alice', 'Gialli'),
+    ('Riccardo', 'Verdi'),
+    ('Beatrice', 'Bianchi'),
+    ('Tommaso', 'Russo'),
+    ('Nicole', 'Gialli'),
+    ('Aurora', 'Rossi');
