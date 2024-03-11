@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro Studenti</title>
+    <!-- Collegamento a Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body class="container">
+
+    <h1 class="mt-5">Registro Studenti</h1>
+
+    <table class="table table-bordered mt-4">
+        <thead class="thead-light">
+            <tr>
+                <th>Studente</th>
+                <th>Materia 1</th>
+                <th>Materia 2</th>
+                <!-- Aggiungi altre materie secondo necessità -->
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Studente 1</td>
+                <td id="s1m1">Voto</td>
+                <td id="s1m2">Voto</td>
+                <!-- Aggiungi altre colonne per i voti secondo necessità -->
+            </tr>
+            <tr>
+                <td>Studente 2</td>
+                <td id="s2m1">Voto</td>
+                <td id="s2m2">Voto</td>
+                <!-- Aggiungi altre colonne per i voti secondo necessità -->
+            </tr>
+            <!-- Aggiungi più righe per altri studenti -->
+        </tbody>
+    </table>
+
+    <button class="btn btn-primary" onclick="calcolaMedia()">Calcola Media</button>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        function calcolaMedia() {
+            // Puoi implementare qui la logica per calcolare la media dei voti
+            // ad esempio, ottenendo i voti dalle celle della tabella
+            alert("Implementa la logica per calcolare la media dei voti.");
+        }
+    </script>
+
+</body>
+</html>
