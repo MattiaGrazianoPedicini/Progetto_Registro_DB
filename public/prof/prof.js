@@ -1,4 +1,4 @@
-import { load } from "../comune.js";
+import { load, send } from "../comune.js";
 
 const url = new URL(window.location.href);
 const classeDaProiettare = url.searchParams.get("nomeClasse");
@@ -7,7 +7,7 @@ function creaTabella(materie, studenti, valutazioni) {
   let tabella = "<tr><th>Studenti</th>";
   materie.forEach((materia) => {
     // Creazione dell'intestazione con le materie
-    tabella += "<th>" + materia + "</th>";
+    tabella += "<th>" + materia.materia + "</th>";
   });
   tabella += "</tr>";
 
@@ -18,7 +18,7 @@ function creaTabella(materie, studenti, valutazioni) {
       let trova = false;
       valutazioni.forEach((valutazione) => {
         if (
-          materia === valutazione.NomeMateria &&
+          materia.materia === valutazione.NomeMateria &&
           studente.id === valutazione.Studente_Id
         ) {
           tabella += "<td>" + valutazione.Voto + "</td>";
@@ -48,9 +48,7 @@ function aggiungiSelect(studenti, materie) {
     //ciclo per creazione select per studente
     output +=
       `<option value="` +
-      studente.cognome +
-      " " +
-      studente.nome +
+      studente.id +
       `">` +
       studente.cognome +
       " " +
@@ -61,7 +59,7 @@ function aggiungiSelect(studenti, materie) {
   let output2 = "";
   materie.forEach((materia) => {
     //ciclo per creazione select per materie
-    output2 += `<option value="` + materia + `">` + materia + "</option>";
+    output2 += `<option value="` + materia.id + `">` + materia.materia + "</option>";
   });
   document.getElementById("materie").innerHTML = output2; //aggiunta select all'html
 }
@@ -69,11 +67,15 @@ function aggiungiSelect(studenti, materie) {
 load("/materieXclassi").then((data) => {
   load("/studentiXclassi").then((data2) => {
     load("/valutazioniXmaterie").then((data3) => {
-      let listaMaterie = [];
+      const listaMaterie = [];
       const listaStudenti = [];
       for (let index = 0; index < data.length; index++) {
         if (data[index].NomeClasse === classeDaProiettare) {
-          listaMaterie = data[index].Materie.split(",");
+          let obj = {
+            id: data[index].Id,
+            materia: data[index].Materia,
+          };
+          listaMaterie.push(obj);
         }
       }
       for (let index = 0; index < data2.length; index++) {
@@ -86,6 +88,7 @@ load("/materieXclassi").then((data) => {
           listaStudenti.push(obj);
         }
       }
+      console.log(listaMaterie);
       creaTitolo(classeDaProiettare); //titolo con classe caricata
       aggiungiSelect(listaStudenti, listaMaterie); //aggiunta select all'html
       creaTabella(listaMaterie, listaStudenti, data3); //tabella con materie, studenti e voti
@@ -93,31 +96,15 @@ load("/materieXclassi").then((data) => {
   });
 });
 
-/*
-let dati = {};
-
 document.getElementById("salva").onclick = () => {
+  let check = document.getElementById("voto").value % 0.25;
   if (
-    document.getElementById("voto").value > -1 &&
-    document.getElementById("voto").value < 11
+    document.getElementById("voto").value >= 1 &&
+    document.getElementById("voto").value <= 10 &&
+    check === 0
   ) {
-    //solo numeri da 0 a 10
-    let stud = document.getElementById("studenti").value;
-    let mat = document.getElementById("materie").value;
-    dati.studenti.forEach((studente) => {
-      //ciclo per ricerca e modifica del voto
-      if (
-        studente.nome + " " + studente.cognome == stud &&
-        studente.materia[mat] != undefined
-      ) {
-        studente.materia[mat] = document.getElementById("voto").value; //modifica del voto nella classe
-        creaTabella(dati);
-      }
-    });
-    caricaDati(dati, "registro-classe"); //salvataggio su cache
+    console.log("bravo fallito");
   } else {
-    alert("Bisogna inserire un numero da 0 a 10."); //messaggio di errore
+    alert("Bisogna inserire un voto da 1 a 10 e multiplo di 0.25"); //messaggio di errore
   }
 };
-
-*/

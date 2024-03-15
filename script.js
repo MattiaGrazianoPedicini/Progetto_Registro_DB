@@ -31,11 +31,10 @@ const selectClassi = () => {
 
 const selectMaterie_Classe = () => {
   const sql = `
-  SELECT Classe.Nome AS NomeClasse, GROUP_CONCAT(Materia.Nome) AS Materie
+  SELECT Classe.Nome AS NomeClasse, Materia.Id ,Materia.Nome AS Materia
   FROM Classe
   INNER JOIN Studiare ON Classe.Id = Studiare.Classe_Id
-  INNER JOIN Materia ON Studiare.Materia_Id = Materia.Id
-  GROUP BY Classe.Nome;  
+  INNER JOIN Materia ON Studiare.Materia_Id = Materia.Id;  
          `;
   return executeQuery(sql);
 };
