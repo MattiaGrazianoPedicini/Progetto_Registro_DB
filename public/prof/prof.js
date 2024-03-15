@@ -69,15 +69,6 @@ function aggiungiSelect(studenti, materie) {
 load("/materieXclassi").then((data) => {
   load("/studentiXclassi").then((data2) => {
     load("/valutazioniXmaterie").then((data3) => {
-      console.log(data);
-      console.log(
-        "----------------------------------------------------------------------------------"
-      );
-      console.log(data2);
-      console.log(
-        "----------------------------------------------------------------------------------"
-      );
-      console.log(data3);
       let listaMaterie = [];
       const listaStudenti = [];
       for (let index = 0; index < data.length; index++) {
