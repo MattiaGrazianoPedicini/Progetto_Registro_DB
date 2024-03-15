@@ -16,7 +16,6 @@ const executeQuery = (sql) => {
         console.error(err);
         reject();
       }
-      console.log("done");
       resolve(result);
     });
   });
@@ -68,6 +67,38 @@ const selectValutazioni_Materie = () => {
   return executeQuery(sql);
 };
 
+const selectValutazione = () => {
+  const sql = `SELECT * FROM Valutazione;`;
+  return executeQuery(sql);
+};
+
+const insertValutazione = (voto, materia, studente) => {
+  const sql =
+    `INSERT INTO Valutazione (Voto, Materia_Id, Studente_Id) VALUES (` +
+    voto +
+    `, ` +
+    materia +
+    `, ` +
+    studente +
+    `);`;
+  return executeQuery(sql);
+};
+
+const updateValutazione = (voto, materia, studente) => {
+  const sql =
+    `UPDATE Valutazione
+  SET Voto = ` +
+    voto +
+    `
+  WHERE Materia_Id = ` +
+    materia +
+    ` AND Studente_Id = ` +
+    studente +
+    `;
+  `;
+  return executeQuery(sql);
+};
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/", express.static(path.join(__dirname, "public")));
@@ -101,5 +132,26 @@ app.get("/valutazioniXmaterie", (req, res) => {
   //inviare
   selectValutazioni_Materie().then((result) => {
     res.json(result);
+  });
+});
+
+app.post("/modificaValutazione", (req, res) => {
+  //prendere
+  let modifica = req.body.cose;
+  selectValutazione().then((result) => {
+    let check = false;
+    result.forEach((valutazione) => {
+      if (
+        modifica.studente == valutazione.Studente_Id &&
+        modifica.materia == valutazione.Materia_Id
+      ) {
+        check = true;
+      }
+    });
+    if (check) {
+      updateValutazione(modifica.voto, modifica.materia, modifica.studente);
+    } else {
+      insertValutazione(modifica.voto, modifica.materia, modifica.studente);
+    }
   });
 });

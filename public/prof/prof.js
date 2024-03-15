@@ -2,6 +2,7 @@ import { load, send } from "../comune.js";
 
 const url = new URL(window.location.href);
 const classeDaProiettare = url.searchParams.get("nomeClasse");
+renderPagina();
 
 function creaTabella(materie, studenti, valutazioni) {
   let tabella = "<tr><th>Studenti</th>";
@@ -50,51 +51,53 @@ function aggiungiSelect(studenti, materie) {
       `<option value="` +
       studente.id +
       `">` +
-      studente.cognome +
-      " " +
       studente.nome +
+      " " +
+      studente.cognome +
       "</option>";
   });
   document.getElementById("studenti").innerHTML = output; //aggiunta select all'html
   let output2 = "";
   materie.forEach((materia) => {
     //ciclo per creazione select per materie
-    output2 += `<option value="` + materia.id + `">` + materia.materia + "</option>";
+    output2 +=
+      `<option value="` + materia.id + `">` + materia.materia + "</option>";
   });
   document.getElementById("materie").innerHTML = output2; //aggiunta select all'html
 }
 
-load("/materieXclassi").then((data) => {
-  load("/studentiXclassi").then((data2) => {
-    load("/valutazioniXmaterie").then((data3) => {
-      const listaMaterie = [];
-      const listaStudenti = [];
-      for (let index = 0; index < data.length; index++) {
-        if (data[index].NomeClasse === classeDaProiettare) {
-          let obj = {
-            id: data[index].Id,
-            materia: data[index].Materia,
-          };
-          listaMaterie.push(obj);
+function renderPagina() {
+  load("/materieXclassi").then((data) => {
+    load("/studentiXclassi").then((data2) => {
+      load("/valutazioniXmaterie").then((data3) => {
+        const listaMaterie = [];
+        const listaStudenti = [];
+        for (let index = 0; index < data.length; index++) {
+          if (data[index].NomeClasse === classeDaProiettare) {
+            let obj = {
+              id: data[index].Id,
+              materia: data[index].Materia,
+            };
+            listaMaterie.push(obj);
+          }
         }
-      }
-      for (let index = 0; index < data2.length; index++) {
-        if (data2[index].NomeClasse === classeDaProiettare) {
-          let obj = {
-            id: data2[index].Id,
-            nome: data2[index].Nome,
-            cognome: data2[index].Cognome,
-          };
-          listaStudenti.push(obj);
+        for (let index = 0; index < data2.length; index++) {
+          if (data2[index].NomeClasse === classeDaProiettare) {
+            let obj = {
+              id: data2[index].Id,
+              nome: data2[index].Nome,
+              cognome: data2[index].Cognome,
+            };
+            listaStudenti.push(obj);
+          }
         }
-      }
-      console.log(listaMaterie);
-      creaTitolo(classeDaProiettare); //titolo con classe caricata
-      aggiungiSelect(listaStudenti, listaMaterie); //aggiunta select all'html
-      creaTabella(listaMaterie, listaStudenti, data3); //tabella con materie, studenti e voti
+        creaTitolo(classeDaProiettare); //titolo con classe caricata
+        aggiungiSelect(listaStudenti, listaMaterie); //aggiunta select all'html
+        creaTabella(listaMaterie, listaStudenti, data3); //tabella con materie, studenti e voti
+      });
     });
   });
-});
+}
 
 document.getElementById("salva").onclick = () => {
   let check = document.getElementById("voto").value % 0.25;
@@ -103,8 +106,15 @@ document.getElementById("salva").onclick = () => {
     document.getElementById("voto").value <= 10 &&
     check === 0
   ) {
-    console.log("bravo fallito");
+    let obj = {
+      studente: document.getElementById("studenti").value,
+      materia: document.getElementById("materie").value,
+      voto: document.getElementById("voto").value,
+    };
+    send(obj, "/modificaValutazione");
+    renderPagina();
   } else {
     alert("Bisogna inserire un voto da 1 a 10 e multiplo di 0.25"); //messaggio di errore
   }
+  document.getElementById("voto").value = "";
 };
