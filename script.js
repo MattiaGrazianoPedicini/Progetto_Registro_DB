@@ -80,8 +80,7 @@ server.listen(80, () => {
 app.get("/classi", (req, res) => {
   //inviare
   selectClassi().then((result) => {
-    console.log(result);
-    res.json({ classi: result });
+    res.json(result);
   });
 });
 

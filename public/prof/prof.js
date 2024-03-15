@@ -1,6 +1,7 @@
 import { load } from "../comune.js";
 
-const classeDaProiettare = "5C";
+const url = new URL(window.location.href);
+const classeDaProiettare = url.searchParams.get("nomeClasse");
 
 function creaTabella(materie, studenti, valutazioni) {
   let tabella = "<tr><th>Studenti</th>";
@@ -102,11 +103,6 @@ load("/materieXclassi").then((data) => {
 });
 
 /*
-load("/classi").then((data) => {
-  console.log(data);
-});
-
-
 let dati = {};
 
 document.getElementById("salva").onclick = () => {
