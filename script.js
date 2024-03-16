@@ -28,6 +28,13 @@ const selectClassi = () => {
   return executeQuery(sql);
 };
 
+const selectLogin = () => {
+  const sql = `
+      SELECT Prof.Email AS Email, Prof.Password AS Password FROM Prof
+         `;
+  return executeQuery(sql);
+};
+
 const selectMaterie_Classe = () => {
   const sql = `
   SELECT Classe.Nome AS NomeClasse, Materia.Id ,Materia.Nome AS Materia
@@ -155,3 +162,34 @@ app.post("/modificaValutazione", (req, res) => {
     }
   });
 });
+
+app.post("/login", (req, res) => {
+  const username = req.headers.username;
+  const password = req.headers.password;
+  checkLogin(username, password)
+    .then(() => {
+      res.json({ result: "ok" });
+    })
+    .catch(() => {
+      res.status(401); //401 è il codice http Unauthorized)
+      res.json({ result: "Unauthorized" });
+    });
+});
+
+const checkLogin = (username, password) => {
+  return new Promise((res, rej) => {
+    selectLogin().then((result) => {
+      let check = false;
+      result.forEach((prof) => {
+        if (prof.Email == username && prof.Password == password) {
+          check = true;
+        }
+      });
+      if (check) {
+        res();
+      } else {
+        rej();
+      }
+    });
+  });
+};
