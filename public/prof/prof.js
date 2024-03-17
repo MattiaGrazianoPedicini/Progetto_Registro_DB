@@ -118,3 +118,30 @@ document.getElementById("salva").onclick = () => {
   }
   document.getElementById("voto").value = "";
 };
+
+
+const loginControllo = (user, pass) => {
+  fetch("/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      username: user,
+      password: pass,
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      if (data.result == "Unauthorized") {
+        window.location.href = "../login/login.html";
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+};
+
+loginControllo(
+  sessionStorage.getItem("username"),
+  sessionStorage.getItem("password")
+);

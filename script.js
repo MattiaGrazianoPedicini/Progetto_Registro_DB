@@ -115,10 +115,19 @@ server.listen(80, () => {
 });
 
 app.get("/classi", (req, res) => {
-  //inviare
-  selectClassi().then((result) => {
-    res.json(result);
-  });
+  const username = req.headers.username;
+  const password = req.headers.password;
+  checkLogin(username, password)
+    .then(() => {
+      //inviare
+      selectClassi().then((result) => {
+        res.json(result);
+      });
+    })
+    .catch(() => {
+      res.status(401); //401 è il codice http Unauthorized)
+      res.json({ result: "Unauthorized" });
+    });
 });
 
 app.get("/materieXclassi", (req, res) => {
@@ -143,24 +152,33 @@ app.get("/valutazioniXmaterie", (req, res) => {
 });
 
 app.post("/modificaValutazione", (req, res) => {
-  //prendere
-  let modifica = req.body.cose;
-  selectValutazione().then((result) => {
-    let check = false;
-    result.forEach((valutazione) => {
-      if (
-        modifica.studente == valutazione.Studente_Id &&
-        modifica.materia == valutazione.Materia_Id
-      ) {
-        check = true;
-      }
+  const username = req.headers.username;
+  const password = req.headers.password;
+  checkLogin(username, password)
+    .then(() => {
+      //prendere
+      let modifica = req.body.cose;
+      selectValutazione().then((result) => {
+        let check = false;
+        result.forEach((valutazione) => {
+          if (
+            modifica.studente == valutazione.Studente_Id &&
+            modifica.materia == valutazione.Materia_Id
+          ) {
+            check = true;
+          }
+        });
+        if (check) {
+          updateValutazione(modifica.voto, modifica.materia, modifica.studente);
+        } else {
+          insertValutazione(modifica.voto, modifica.materia, modifica.studente);
+        }
+      });
+    })
+    .catch(() => {
+      res.status(401); //401 è il codice http Unauthorized)
+      res.json({ result: "Unauthorized" });
     });
-    if (check) {
-      updateValutazione(modifica.voto, modifica.materia, modifica.studente);
-    } else {
-      insertValutazione(modifica.voto, modifica.materia, modifica.studente);
-    }
-  });
 });
 
 app.post("/login", (req, res) => {

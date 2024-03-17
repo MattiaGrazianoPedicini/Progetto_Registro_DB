@@ -1,4 +1,4 @@
-const login = (t, user, pass) => {
+const login = (user, pass) => {
   fetch("/login", {
     method: "POST",
     headers: {
@@ -6,10 +6,16 @@ const login = (t, user, pass) => {
       username: user,
       password: pass,
     },
-    body: JSON.stringify({ cose: t }),
   })
     .then((response) => response.json())
-    .then((data) => console.log(data))
+    .then((data) => {
+      console.log(data);
+      if (data.result !== "Unauthorized") {
+        sessionStorage.setItem("username", user);
+        sessionStorage.setItem("password", pass);
+        window.location.href = "../prof/home.html";
+      }
+    })
     .catch((error) => {
       console.error("Error:", error);
     });

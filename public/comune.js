@@ -3,6 +3,8 @@ export const send = (t, url) => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      username: sessionStorage.getItem("username"),
+      password: sessionStorage.getItem("password"),
     },
     body: JSON.stringify({ cose: t }),
   })
@@ -15,7 +17,14 @@ export const send = (t, url) => {
 
 export const load = (url) => {
   return new Promise((resolve, reject) => {
-    fetch(url)
+    fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        username: sessionStorage.getItem("username"),
+        password: sessionStorage.getItem("password"),
+      },
+    })
       .then((response) => response.json())
       .then((json) => {
         resolve(json);

@@ -23,7 +23,6 @@ const renderClassi = (lista, div) => {
       .replace("%CLASSE", classe.Nome);
   });
   div.innerHTML = output;
-
   // Aggiungi gestore di eventi clic
   div.querySelectorAll(".card").forEach((card) => {
     card.addEventListener("click", () => {
@@ -32,3 +31,29 @@ const renderClassi = (lista, div) => {
     });
   });
 };
+
+const loginControllo = (user, pass) => {
+  fetch("/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      username: user,
+      password: pass,
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      if (data.result == "Unauthorized") {
+        window.location.href = "../login/login.html";
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+};
+
+loginControllo(
+  sessionStorage.getItem("username"),
+  sessionStorage.getItem("password")
+);
