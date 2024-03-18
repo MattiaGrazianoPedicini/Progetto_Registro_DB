@@ -1,3 +1,5 @@
+//import { load } from "./comune.js";
+
 const body = document.getElementById("tab_voti");
 
 const tableHeader = `
@@ -38,3 +40,50 @@ const renderTab = () => {
 };
 
 renderTab();
+
+document.getElementById("accediButton").addEventListener("click", function() {
+    window.location.href = "/login/login.html";
+  });
+
+
+/*
+// Dichiara oggetti JSON vuoti per studenti, materie e valutazioni
+let studentiData = {};
+let materieData = {};
+let valutazioniData = {};
+
+// Carica i dati degli studenti
+load("/studentiXclassi", function(studenti) {
+  studenti.forEach(function(studente) {
+    studentiData[studente.id] = {
+      nome: studente.nome,
+      cognome: studente.cognome
+    };
+  });
+
+  // Carica i dati delle materie
+  load("/materieXclassi", function(materie) {
+    materie.forEach(function(materia) {
+      materieData[materia.id] = materia.materia;
+    });
+
+    // Carica i dati delle valutazioni
+    load("/valutazioniXmaterie", function(valutazioni) {
+      valutazioni.forEach(function(valutazione) {
+        if (!valutazioniData[valutazione.Studente_Id]) {
+          valutazioniData[valutazione.Studente_Id] = {};
+        }
+        if (!valutazioniData[valutazione.Studente_Id][valutazione.NomeMateria]) {
+          valutazioniData[valutazione.Studente_Id][valutazione.NomeMateria] = [];
+        }
+        valutazioniData[valutazione.Studente_Id][valutazione.NomeMateria].push(valutazione.Voto);
+      });
+
+      // Ora puoi utilizzare gli oggetti JSON studentiData, materieData e valutazioniData come necessario
+      console.log("Dati degli studenti:", studentiData);
+      console.log("Dati delle materie:", materieData);
+      console.log("Dati delle valutazioni:", valutazioniData);
+    });
+  });
+});
+*/
