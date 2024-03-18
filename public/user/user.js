@@ -126,9 +126,9 @@ const renderTab = () => {
                     rowHtml = rowHtml.replace("%VOTO8", "");
                 }
             }
-            
+
         }
         html += rowHtml;
     }
-    body.innerHTML = body.innerHTML = html.replaceAll('%VOTO1','').replaceAll('%VOTO2','').replaceAll('%VOTO3','').replaceAll('%VOTO4','').replaceAll('%VOTO5','').replaceAll('%VOTO6','').replaceAll('%VOTO7','').replaceAll('%VOTO8','');;
+    body.innerHTML = body.innerHTML = html.replaceAll('%VOTO1', '').replaceAll('%VOTO2', '').replaceAll('%VOTO3', '').replaceAll('%VOTO4', '').replaceAll('%VOTO5', '').replaceAll('%VOTO6', '').replaceAll('%VOTO7', '').replaceAll('%VOTO8', '');;
 };
