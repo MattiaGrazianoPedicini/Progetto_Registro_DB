@@ -1,4 +1,4 @@
-//import { load } from "./comune.js";
+import { load } from "../comune.js";
 
 const body = document.getElementById("tab_voti");
 
@@ -46,7 +46,6 @@ document.getElementById("accediButton").addEventListener("click", function() {
   });
 
 
-/*
 // Dichiara oggetti JSON vuoti per studenti, materie e valutazioni
 let studentiData = {};
 let materieData = {};
@@ -86,4 +85,3 @@ load("/studentiXclassi", function(studenti) {
     });
   });
 });
-*/
