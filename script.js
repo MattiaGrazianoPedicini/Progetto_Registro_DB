@@ -139,6 +139,7 @@ app.get("/materieXclassi", (req, res) => {
 
 app.get("/studentiXclassi", (req, res) => {
   //inviare
+  console.log("Entrato");
   selectStudenti_Classe().then((result) => {
     res.json(result);
   });
