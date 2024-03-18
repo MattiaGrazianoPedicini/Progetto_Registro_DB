@@ -83,70 +83,88 @@ const renderTab = () => {
 
     for (let i = 0; i < Object.keys(studentiData).length; i++) {
         let rowHtml = template.replace("%STUDENTE", Object.values(studentiData)[i].nome + " " + Object.values(studentiData)[i].cognome);
-        const check = [false, false, false, false, false, false, false, false];
         for (let j = 0; j < chiavi.length; j++) {
             if (Object.keys(studentiData)[i] === chiavi[j]) {
-                if (valori[j].Matematica) {
+                if (valori[j].Matematica !== undefined) {
                     rowHtml = rowHtml.replace("%VOTO1", valori[j].Matematica);
-                    check[0] = true;
+                } else {
+                    rowHtml = rowHtml.replace("%VOTO1", "");
                 }
-                if (valori[j].Italiano) {
+                if (valori[j].Italiano !== undefined) {
                     rowHtml = rowHtml.replace("%VOTO2", valori[j].Italiano);
-                    check[1] = true;
+                } else {
+                    rowHtml = rowHtml.replace("%VOTO2", "");
                 }
-                if (valori[j].Storia) {
+                if (valori[j].Storia !== undefined) {
                     rowHtml = rowHtml.replace("%VOTO3", valori[j].Storia);
-                    check[2] = true;
+                } else {
+                    rowHtml = rowHtml.replace("%VOTO3", "");
                 }
-                if (valori[j].Scienze) {
+                if (valori[j].Scienze !== undefined) {
                     rowHtml = rowHtml.replace("%VOTO4", valori[j].Scienze);
-                    check[3] = true;
+                } else {
+                    rowHtml = rowHtml.replace("%VOTO4", "");
                 }
-                if (valori[j].Inglese) {
+                if (valori[j].Inglese !== undefined) {
                     rowHtml = rowHtml.replace("%VOTO5", valori[j].Inglese);
-                    check[4] = true;
+                } else {
+                    rowHtml = rowHtml.replace("%VOTO5", "");
                 }
-                if (valori[j].Arte) {
+                if (valori[j].Arte !== undefined) {
                     rowHtml = rowHtml.replace("%VOTO6", valori[j].Arte);
-                    check[5] = true;
+                } else {
+                    rowHtml = rowHtml.replace("%VOTO6", "");
                 }
-                if (valori[j].Musica) {
+                if (valori[j].Musica !== undefined) {
                     rowHtml = rowHtml.replace("%VOTO7", valori[j].Musica);
-                    check[6] = true;
+                } else {
+                    rowHtml = rowHtml.replace("%VOTO7", "");
                 }
-                if (valori[j].Geografia) {
+                if (valori[j].Geografia !== undefined) {
                     rowHtml = rowHtml.replace("%VOTO8", valori[j].Geografia);
-                    check[7] = true;
+                } else {
+                    rowHtml = rowHtml.replace("%VOTO8", "");
                 }
-
             }
-            /*
-            if (check[0] === false) {
-                rowHtml = rowHtml.replace("%VOTO1", " ");
-            }
-            if (check[1] === false) {
-                rowHtml = rowHtml.replace("%VOTO2", " ");
-            }
-            if (check[2] === false) {
-                rowHtml = rowHtml.replace("%VOTO3", " ");
-            }
-            if (check[3] === false) {
-                rowHtml = rowHtml.replace("%VOTO4", " ");
-            }
-            if (check[4] === false) {
-                rowHtml = rowHtml.replace("%VOTO5", " ");
-            }
-            if (check[5] === false) {
-                rowHtml = rowHtml.replace("%VOTO6", " ");
-            }
-            if (check[6] === false) {
-                rowHtml = rowHtml.replace("%VOTO7", " ");
-            }
-            if (check[7] === false) {
-                rowHtml = rowHtml.replace("%VOTO8", " ");
-            }*/
+            
         }
         html += rowHtml;
     }
     body.innerHTML = html;
 };
+/*
+function creaTabella(materie, studenti, valutazioni) {
+    let tabella = "<tr><th>Studenti</th>";
+    materie.forEach((materia) => {
+        // Creazione dell'intestazione con le materie
+        tabella += "<th>" + materia.materia + "</th>";
+    });
+    tabella += "</tr>";
+
+    studenti.forEach((studente) => {
+        // riempimento della tabella con studenti e voti
+        tabella += "<tr><td>" + studente.nome + " " + studente.cognome + "</td>";
+        materie.forEach((materia) => {
+            let trova = false;
+            valutazioni.forEach((valutazione) => {
+                if (
+                    materia.materia === valutazione.NomeMateria &&
+                    studente.id === valutazione.Studente_Id
+                ) {
+                    tabella += "<td>" + valutazione.Voto + "</td>";
+                    trova = true;
+                }
+            });
+            // riempimento celle con voti
+            if (!trova) {
+                tabella += "<td> </td>";
+            } else {
+                trova = false;
+            }
+        });
+        tabella += "</tr>";
+    });
+    document.getElementById("tabella").innerHTML = tabella; // Aggiunta della tabella al documento
+}
+
+creaTabella(materieData, studentiData, valutazioniData);*/
