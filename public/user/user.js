@@ -130,7 +130,7 @@ const renderTab = () => {
         }
         html += rowHtml;
     }
-    body.innerHTML = html;
+    body.innerHTML = body.innerHTML = html.replaceAll('%VOTO1','').replaceAll('%VOTO2','').replaceAll('%VOTO3','').replaceAll('%VOTO4','').replaceAll('%VOTO5','').replaceAll('%VOTO6','').replaceAll('%VOTO7','').replaceAll('%VOTO8','');;
 };
 /*
 function creaTabella(materie, studenti, valutazioni) {
