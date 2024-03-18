@@ -132,39 +132,3 @@ const renderTab = () => {
     }
     body.innerHTML = body.innerHTML = html.replaceAll('%VOTO1','').replaceAll('%VOTO2','').replaceAll('%VOTO3','').replaceAll('%VOTO4','').replaceAll('%VOTO5','').replaceAll('%VOTO6','').replaceAll('%VOTO7','').replaceAll('%VOTO8','');;
 };
-/*
-function creaTabella(materie, studenti, valutazioni) {
-    let tabella = "<tr><th>Studenti</th>";
-    materie.forEach((materia) => {
-        // Creazione dell'intestazione con le materie
-        tabella += "<th>" + materia.materia + "</th>";
-    });
-    tabella += "</tr>";
-
-    studenti.forEach((studente) => {
-        // riempimento della tabella con studenti e voti
-        tabella += "<tr><td>" + studente.nome + " " + studente.cognome + "</td>";
-        materie.forEach((materia) => {
-            let trova = false;
-            valutazioni.forEach((valutazione) => {
-                if (
-                    materia.materia === valutazione.NomeMateria &&
-                    studente.id === valutazione.Studente_Id
-                ) {
-                    tabella += "<td>" + valutazione.Voto + "</td>";
-                    trova = true;
-                }
-            });
-            // riempimento celle con voti
-            if (!trova) {
-                tabella += "<td> </td>";
-            } else {
-                trova = false;
-            }
-        });
-        tabella += "</tr>";
-    });
-    document.getElementById("tabella").innerHTML = tabella; // Aggiunta della tabella al documento
-}
-
-creaTabella(materieData, studentiData, valutazioniData);*/
