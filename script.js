@@ -106,6 +106,43 @@ const updateValutazione = (voto, materia, studente) => {
   return executeQuery(sql);
 };
 
+// ADMIN
+const getClassi = () => {
+  const sql = `
+  SELECT Classe.Nome, Studente.Id, Studente.Cognome, Studente.Nome 
+  FROM Classe
+  INNER JOIN Comporre ON Classe.Id = Comporre.Classe_Id
+  INNER JOIN Studente ON Comporre.Studente_Id = Studente.Id
+  GROUP BY Classe.id
+   `;
+  return executeQuery(sql);
+}
+
+const insertStudenti_Classe = (nome, cognome) => {
+  const sql = `
+  INSERT INTO Studente (Nome, Cognome)
+  VALUES ('${nome}', '${cognome}')
+   `;
+  return executeQuery(sql);
+}
+
+const insertClassi = (val) => {
+  const sql = `
+      INSERT INTO Classe (Nome)
+      VALUES ('${val}')
+         `;
+  console.log(sql);
+  return executeQuery(sql);
+};
+
+const insertMateria = (mat) => {
+  const sql = `
+  INSERT INTO Materia (Nome)
+  VALUES ('${mat}')
+         `;
+  return executeQuery(sql);
+};
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/", express.static(path.join(__dirname, "public")));
@@ -212,3 +249,38 @@ const checkLogin = (username, password) => {
     });
   });
 };
+
+/////////////////// FUNZIONI SERVER ADMIN /////////////////////////
+app.post("/insertClasse", (req, res) => {
+  const classe = req.body.nomeClasse;
+  console.log(classe);
+  insertClassi(classe).then((response) => {
+    res.json({ result: "ok" });
+  });
+});
+
+app.post("/materieXclassi", (req, res) => {
+  const materia = req.body.materia;
+  console.log(materia);
+  insertMateria(materia).then((result) => {
+    res.json({ result: "ok" });
+  });
+});
+
+app.post("/studentiXclassi", (req, res) => {
+  const studenti = req.body.studenti;
+  console.log(studenti);
+  let i = 0;
+  while (i < studenti.length) {
+    insertStudenti_Classe(studenti[i].nome, studenti[i].cognome).then((result) => {
+      i++;
+    });
+  }
+});
+
+app.get("/getClassi",(req, res) => {
+  console.log("controllo");
+  selectClassi().then((response) => {
+    res.json({result: response});
+  });
+});
