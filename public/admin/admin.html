@@ -1,16 +1,4 @@
 <!DOCTYPE html>
-<!--
-Una scuola privata ha bisogno di un registro elettronico.
-- creare una pagina accessibile solo tramite login con utente admin, che permette di creare:
-a) un elenco di studenti (nome e cognome)
-b) un elenco di materie
-c) un elenco di classi
-E’ prevista più di una classe, con studenti differenti o con gli stessi studenti. Ogni classe è associata alle stesse
-materie.
-
-Inserire sul database almeno 3 classi con almeno 15 studenti, almeno 8 materie ed almeno 2 prof. Usare nomi
-di fantasia.
--->
 <html>
 
 <head>
@@ -21,44 +9,67 @@ di fantasia.
     crossorigin="anonymous"></script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
+  <style>
+    .custom-bg {
+      background-color: #f8f9fa;
+    }
 
- <!-- <link href="style.css" rel="stylesheet" type="text/css" />-->
+    .custom-border {
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+  </style>
 </head>
 
-<body>
-  <div id="creaClasseDIV">
-    <div id="elencoStudenti">
-      <h1> Menù - compilazione </h1><br>
-      <div id="formStud">
-        Nome: <input type='text' class='anagraficanome' id='nomeStud' placeholder='Inserire nome studente'><br>
-        Cognome: <input type='text' class='anagraficacognome' id='cognomeStud' placeholder='Inserire cognome studente'><br>
-        <br>
+<body class="custom-bg">
+  <div class="container py-5">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="custom-border p-4">
+          <h1 class="mb-4">Menù - Compilazione</h1>
+          <form id="formStud">
+            <div class="mb-3">
+              <label for="nomeStud" class="form-label">Nome</label>
+              <input type="text" class="form-control" id="nomeStud" placeholder="Inserire nome studente">
+            </div>
+            <div class="mb-3">
+              <label for="cognomeStud" class="form-label">Cognome</label>
+              <input type="text" class="form-control" id="cognomeStud" placeholder="Inserire cognome studente">
+            </div>
+            <div class="mb-3">
+              <label for="nomeClasse" class="form-label">Classe</label>
+              <input type="text" class="form-control" id="nomeClasse" placeholder="Inserire nome classe">
+            </div>
+            <button type="button" id="confermaNomiStud" class="btn btn-primary">Conferma aggiunta studenti</button>
+          </form>
+        </div>
       </div>
-
-      <h3> selezionare classe a cui aggiungerli: </h3>
-      <input type="text" id="nomeClasse" placeholder="Inserire nome classe">
-      <br><br><button type="button" id="confermaNomiStud" class="btn btn-primary">conferma aggiunta studenti</button>
-      <br><br><br>
-     
-      <br><br><br><br>
+      <div class="col-lg-6">
+        <div class="custom-border p-4">
+          <h3 class="mb-4">Oppure, inserire una nuova classe</h3>
+          <div class="mb-3">
+            <label for="nomeNuovaClasse" class="form-label">Nome classe</label>
+            <input type="text" class="form-control" id="nomeNuovaClasse" placeholder="Inserire nome classe">
+          </div>
+          <button type="button" id="aggClass" class="btn btn-primary">Aggiungi nuova classe</button>
+        </div>
+      </div>
     </div>
 
-
-    <h3> oppure, inserire una nuova classe </h3>
-    <label>Nome classe</label>
-    <input type="text" id="nomeNuovaClasse" placeholder="Inserire nome classe">
-    <br><br>
-    <button type="button" id="aggClass" class="btn btn-primary">aggiungi nuova classe</button>
-    <br><br><br>
-
-
-    <h3> oppure, inserire una nuova materia </h3>
-    <label for="mat">Nome materia</label>
-    <input type="text" id="nomeNuovaMateria" placeholder="Inserire nome della materia">
+    <div class="row mt-4">
+      <div class="col-lg-6">
+        <div class="custom-border p-4">
+          <h3 class="mb-4">Oppure, inserire una nuova materia</h3>
+          <div class="mb-3">
+            <label for="nomeNuovaMateria" class="form-label">Nome materia</label>
+            <input type="text" class="form-control" id="nomeNuovaMateria" placeholder="Inserire nome della materia">
+          </div>
+          <button type="button" id="aggMat" class="btn btn-primary">Aggiungi nuova materia</button>
+        </div>
+      </div>
+    </div>
   </div>
-  <br>
-  <button type="button" id="aggMat" class="btn btn-primary">aggiungi nuova materia</button>
-
-  <script type="module"  src="admin.js"></script>
+  <script type="module" src="admin.js"></script>
 </body>
+
 </html>
