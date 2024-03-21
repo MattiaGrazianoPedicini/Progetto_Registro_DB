@@ -1,3 +1,9 @@
+let username = "";
+let password = "";
+
+const fs = require('fs');
+const filePath = 'credAd.json';
+
 const login = (user, pass) => {
   fetch("/login", {
     method: "POST",
@@ -14,7 +20,7 @@ const login = (user, pass) => {
         sessionStorage.setItem("username", user);
         sessionStorage.setItem("password", pass);
         window.location.href = "../prof/home.html";
-      }
+      } 
     })
     .catch((error) => {
       console.error("Error:", error);

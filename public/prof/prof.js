@@ -119,7 +119,6 @@ document.getElementById("salva").onclick = () => {
   document.getElementById("voto").value = "";
 };
 
-
 const loginControllo = (user, pass) => {
   fetch("/login", {
     method: "POST",
@@ -132,6 +131,7 @@ const loginControllo = (user, pass) => {
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
+
       if (data.result == "Unauthorized") {
         window.location.href = "../login/login.html";
       }
