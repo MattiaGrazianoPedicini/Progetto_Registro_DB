@@ -210,19 +210,11 @@ server.listen(8090, () => {
 });
 
 app.get("/classi", (req, res) => {
-  const username = req.headers.username;
-  const password = req.headers.password;
-  checkLogin(username, password)
-    .then(() => {
-      //inviare
-      selectClassi().then((result) => {
-        res.json(result);
-      });
-    })
-    .catch(() => {
-      res.status(401); //401 è il codice http Unauthorized)
-      res.json({ result: "Unauthorized" });
-    });
+  //inviare
+  selectClassi().then((result) => {
+    res.json(result);
+  });
+
 });
 
 app.get("/materieXclassi", (req, res) => {
