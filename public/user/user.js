@@ -1,7 +1,10 @@
+//gestione pagina user
+
 import { load } from "../comune.js";
 
 const body = document.getElementById("tab_voti");
 
+//passaggio alla pagina login Augello
 document.getElementById("accediButton").addEventListener("click", function () {
     window.location.href = "/login/login.html";
 });
@@ -10,6 +13,7 @@ let studentiData = {};
 let materieData = {};
 let valutazioniData = {};
 
+//recupero di dati da db Augello
 load("/studentiXclassi").then((studenti) => {
     studenti.forEach((studente) => {
         studentiData[studente.Id] = {
@@ -45,6 +49,7 @@ load("/studentiXclassi").then((studenti) => {
     });
 });
 
+//impostazione tabella Augello
 const tableHeader = `
   <tr class="table-primary">
     <th class="text-center">STUDENTE</th> 
@@ -73,7 +78,7 @@ const template = `
   </tr>
 `;
 
-
+//creazione tabella Augello
 const renderTab = () => {
 
     let chiavi = Object.keys(valutazioniData);
