@@ -2,7 +2,9 @@
 
 import { load } from "../comune.js";
 
+const url = new URL(window.location.href);
 const body = document.getElementById("tab_voti");
+const classeDaProiettare = url.searchParams.get("nomeClasse");
 
 //passaggio alla pagina login Augello
 document.getElementById("accediButton").addEventListener("click", function () {
@@ -18,7 +20,8 @@ load("/studentiXclassi").then((studenti) => {
     studenti.forEach((studente) => {
         studentiData[studente.Id] = {
             nome: studente.Nome,
-            cognome: studente.Cognome
+            cognome: studente.Cognome,
+            classe: studente.NomeClasse
         };
     });
 
@@ -87,53 +90,57 @@ const renderTab = () => {
     let html = tableHeader;
 
     for (let i = 0; i < Object.keys(studentiData).length; i++) {
-        let rowHtml = template.replace("%STUDENTE", Object.values(studentiData)[i].nome + " " + Object.values(studentiData)[i].cognome);
-        for (let j = 0; j < chiavi.length; j++) {
-            if (Object.keys(studentiData)[i] === chiavi[j]) {
-                if (valori[j].Matematica !== undefined) {
-                    rowHtml = rowHtml.replace("%VOTO1", valori[j].Matematica);
-                } else {
-                    rowHtml = rowHtml.replace("%VOTO1", "");
+        if (Object.values(studentiData)[i].classe == classeDaProiettare) {
+            console.log("entrato");
+            let rowHtml = template.replace("%STUDENTE", Object.values(studentiData)[i].nome + " " + Object.values(studentiData)[i].cognome);
+            for (let j = 0; j < chiavi.length; j++) {
+                if (Object.keys(studentiData)[i] === chiavi[j]) {
+                    if (valori[j].Matematica !== undefined) {
+                        rowHtml = rowHtml.replace("%VOTO1", valori[j].Matematica);
+                    } else {
+                        rowHtml = rowHtml.replace("%VOTO1", "");
+                    }
+                    if (valori[j].Italiano !== undefined) {
+                        rowHtml = rowHtml.replace("%VOTO2", valori[j].Italiano);
+                    } else {
+                        rowHtml = rowHtml.replace("%VOTO2", "");
+                    }
+                    if (valori[j].Storia !== undefined) {
+                        rowHtml = rowHtml.replace("%VOTO3", valori[j].Storia);
+                    } else {
+                        rowHtml = rowHtml.replace("%VOTO3", "");
+                    }
+                    if (valori[j].Scienze !== undefined) {
+                        rowHtml = rowHtml.replace("%VOTO4", valori[j].Scienze);
+                    } else {
+                        rowHtml = rowHtml.replace("%VOTO4", "");
+                    }
+                    if (valori[j].Inglese !== undefined) {
+                        rowHtml = rowHtml.replace("%VOTO5", valori[j].Inglese);
+                    } else {
+                        rowHtml = rowHtml.replace("%VOTO5", "");
+                    }
+                    if (valori[j].Arte !== undefined) {
+                        rowHtml = rowHtml.replace("%VOTO6", valori[j].Arte);
+                    } else {
+                        rowHtml = rowHtml.replace("%VOTO6", "");
+                    }
+                    if (valori[j].Musica !== undefined) {
+                        rowHtml = rowHtml.replace("%VOTO7", valori[j].Musica);
+                    } else {
+                        rowHtml = rowHtml.replace("%VOTO7", "");
+                    }
+                    if (valori[j].Geografia !== undefined) {
+                        rowHtml = rowHtml.replace("%VOTO8", valori[j].Geografia);
+                    } else {
+                        rowHtml = rowHtml.replace("%VOTO8", "");
+                    }
                 }
-                if (valori[j].Italiano !== undefined) {
-                    rowHtml = rowHtml.replace("%VOTO2", valori[j].Italiano);
-                } else {
-                    rowHtml = rowHtml.replace("%VOTO2", "");
-                }
-                if (valori[j].Storia !== undefined) {
-                    rowHtml = rowHtml.replace("%VOTO3", valori[j].Storia);
-                } else {
-                    rowHtml = rowHtml.replace("%VOTO3", "");
-                }
-                if (valori[j].Scienze !== undefined) {
-                    rowHtml = rowHtml.replace("%VOTO4", valori[j].Scienze);
-                } else {
-                    rowHtml = rowHtml.replace("%VOTO4", "");
-                }
-                if (valori[j].Inglese !== undefined) {
-                    rowHtml = rowHtml.replace("%VOTO5", valori[j].Inglese);
-                } else {
-                    rowHtml = rowHtml.replace("%VOTO5", "");
-                }
-                if (valori[j].Arte !== undefined) {
-                    rowHtml = rowHtml.replace("%VOTO6", valori[j].Arte);
-                } else {
-                    rowHtml = rowHtml.replace("%VOTO6", "");
-                }
-                if (valori[j].Musica !== undefined) {
-                    rowHtml = rowHtml.replace("%VOTO7", valori[j].Musica);
-                } else {
-                    rowHtml = rowHtml.replace("%VOTO7", "");
-                }
-                if (valori[j].Geografia !== undefined) {
-                    rowHtml = rowHtml.replace("%VOTO8", valori[j].Geografia);
-                } else {
-                    rowHtml = rowHtml.replace("%VOTO8", "");
-                }
-            }
 
-        }
+            }
+       
         html += rowHtml;
+        }
     }
     body.innerHTML = body.innerHTML = html.replaceAll('%VOTO1', '').replaceAll('%VOTO2', '').replaceAll('%VOTO3', '').replaceAll('%VOTO4', '').replaceAll('%VOTO5', '').replaceAll('%VOTO6', '').replaceAll('%VOTO7', '').replaceAll('%VOTO8', '');;
 };
