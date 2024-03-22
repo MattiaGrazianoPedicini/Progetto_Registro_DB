@@ -116,7 +116,7 @@ const getClassi = () => {
   GROUP BY Classe.id
    `;
   return executeQuery(sql);
-}
+};
 
 //inserimenti studente (+tabelle fk)
 const insertStudenti_Classe = (nome, cognome) => {
@@ -125,15 +125,15 @@ const insertStudenti_Classe = (nome, cognome) => {
   VALUES ('${nome}', '${cognome}')
    `;
   return executeQuery(sql);
-}
- 
+};
+
 const insertStudenti_intoValutazione = (id) => {
   const sql = `
   INSERT INTO Valutazione (Studente_Id)
   VALUES ('${id}')
    `;
   return executeQuery(sql);
-}
+};
 
 const insertStudenti_intoComporre = (id) => {
   const sql = `
@@ -141,7 +141,7 @@ const insertStudenti_intoComporre = (id) => {
   VALUES ('${id}')
    `;
   return executeQuery(sql);
-}
+};
 
 //inserimenti classe (+tabelle fk)
 const insertClassi_IntoStudiare = (id) => {
@@ -150,7 +150,7 @@ const insertClassi_IntoStudiare = (id) => {
   VALUES ('${id}')
    `;
   return executeQuery(sql);
-}
+};
 
 const insertClassi_IntoInsegnare = (id) => {
   const sql = `
@@ -158,7 +158,7 @@ const insertClassi_IntoInsegnare = (id) => {
   VALUES ('${id}')
    `;
   return executeQuery(sql);
-}
+};
 
 const insertClassi_IntoComporre = (id) => {
   const sql = `
@@ -166,14 +166,13 @@ const insertClassi_IntoComporre = (id) => {
   VALUES ('${id}')
    `;
   return executeQuery(sql);
-}
+};
 
 const insertClassi = (val) => {
   const sql = `
       INSERT INTO Classe (Nome)
       VALUES ('${val}')
          `;
-  console.log(sql);
   return executeQuery(sql);
 };
 
@@ -201,7 +200,6 @@ const insertMateria_intoStudiare = (id) => {
          `;
   return executeQuery(sql);
 };
-
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -236,7 +234,6 @@ app.get("/materieXclassi", (req, res) => {
 
 app.get("/studentiXclassi", (req, res) => {
   //inviare
-  console.log("Entrato");
   selectStudenti_Classe().then((result) => {
     res.json(result);
   });
@@ -279,17 +276,22 @@ app.post("/modificaValutazione", (req, res) => {
     });
 });
 
+const adminAccess = JSON.parse(fs.readFileSync("./credAd.json"));
 app.post("/login", (req, res) => {
   const username = req.headers.username;
   const password = req.headers.password;
-  checkLogin(username, password)
-    .then(() => {
-      res.json({ result: "ok" });
-    })
-    .catch(() => {
-      res.status(401); //401 è il codice http Unauthorized)
-      res.json({ result: "Unauthorized" });
-    });
+  if (username == adminAccess.username && password == adminAccess.password) {
+    res.json({ result: "admin" });
+  } else {
+    checkLogin(username, password)
+      .then(() => {
+        res.json({ result: "prof" });
+      })
+      .catch(() => {
+        res.status(401); //401 è il codice http Unauthorized)
+        res.json({ result: "Unauthorized" });
+      });
+  }
 });
 
 const checkLogin = (username, password) => {
@@ -318,8 +320,6 @@ const ultimoIDStudente = 0;
 app.post("/insertClasse", (req, res) => {
   const classe = req.body.nomeClasse;
   ultimoIDClasse = req.body.Classe_Id;
-
-  console.log(classe);
   insertClassi(classe).then((response) => {
     res.json({ result: "ok" });
   });
@@ -338,12 +338,11 @@ app.post("/insertClasse", (req, res) => {
 app.post("/materieXclassi", (req, res) => {
   const materia = req.body.materia;
   ultimoIDMateria = req.body.Materia_Id;
-  console.log(materia);
   insertMateria(materia).then((result) => {
     res.json({ result: "ok" });
   });
 
-// scorrere array materie e classe fissa -- ?
+  // scorrere array materie e classe fissa -- ?
   insertMateria_intoStudiare(ultimoIDMateria).then((result) => {
     res.json({ result: "ok" });
   });
@@ -354,25 +353,25 @@ app.post("/materieXclassi", (req, res) => {
 
 app.post("/studentiXclassi", (req, res) => {
   const studenti = req.body.studenti;
-ultimoIDStudente = req.body.Studente_Id;
-  console.log(studenti);
+  ultimoIDStudente = req.body.Studente_Id;
   let i = 0;
   while (i < studenti.length) {
-    insertStudenti_Classe(studenti[i].nome, studenti[i].cognome).then((result) => {
-      i++;
-    });
-    }
-    insertStudenti_intoComporre(ultimoIDStudente).then((result) => {
-      res.json({ result: "ok" });
-    });
-    insertStudenti_intoValutazione(ultimoIDStudente).then((result) => {
-      res.json({ result: "ok" });
-    });
+    insertStudenti_Classe(studenti[i].nome, studenti[i].cognome).then(
+      (result) => {
+        i++;
+      }
+    );
+  }
+  insertStudenti_intoComporre(ultimoIDStudente).then((result) => {
+    res.json({ result: "ok" });
+  });
+  insertStudenti_intoValutazione(ultimoIDStudente).then((result) => {
+    res.json({ result: "ok" });
+  });
 });
 
-app.get("/getClassi",(req, res) => {
-  console.log("controllo");
+app.get("/getClassi", (req, res) => {
   selectClassi().then((response) => {
-    res.json({result: response});
+    res.json({ result: response });
   });
 });
