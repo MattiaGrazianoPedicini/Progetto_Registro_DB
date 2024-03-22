@@ -1,10 +1,10 @@
-import { load, send } from "../comune.js";
+import { load, send } from "../comune.js"; //importazione
 
 const url = new URL(window.location.href);
-const classeDaProiettare = url.searchParams.get("nomeClasse");
+const classeDaProiettare = url.searchParams.get("nomeClasse"); //classe selezionata nella home
 renderPagina();
 
-function creaTabella(materie, studenti, valutazioni) {
+function creaTabella(materie, studenti, valutazioni) { //creazione della tabella con studenti, materie e voti
   let tabella = "<tr><th>Studenti</th>";
   materie.forEach((materia) => {
     // Creazione dell'intestazione con le materie
@@ -16,8 +16,8 @@ function creaTabella(materie, studenti, valutazioni) {
     // riempimento della tabella con studenti e voti
     tabella += "<tr><td>" + studente.nome + " " + studente.cognome + "</td>";
     materie.forEach((materia) => {
-      let trova = false;
-      valutazioni.forEach((valutazione) => {
+      let trova = false; //boolean per controllo presenza valutazione
+      valutazioni.forEach((valutazione) => { // riempimento celle con voti
         if (
           materia.materia === valutazione.NomeMateria &&
           studente.id === valutazione.Studente_Id
@@ -26,8 +26,7 @@ function creaTabella(materie, studenti, valutazioni) {
           trova = true;
         }
       });
-      // riempimento celle con voti
-      if (!trova) {
+      if (!trova) { //in caso non ci fosse il voto
         tabella += "<td> </td>";
       } else {
         trova = false;
@@ -38,12 +37,12 @@ function creaTabella(materie, studenti, valutazioni) {
   document.getElementById("tabella").innerHTML = tabella; // Aggiunta della tabella al documento
 }
 
-function creaTitolo(nome) {
+function creaTitolo(nome) { //funzione per creazione titolo
   let titolo = "<h1>" + nome + "</h1>";
   document.getElementById("title-container").innerHTML = titolo;
 }
 
-function aggiungiSelect(studenti, materie) {
+function aggiungiSelect(studenti, materie) { //funzione per creare select dinamici
   let output = "";
   studenti.forEach((studente) => {
     //ciclo per creazione select per studente
@@ -67,13 +66,13 @@ function aggiungiSelect(studenti, materie) {
 }
 
 function renderPagina() {
-  load("/materieXclassi").then((data) => {
-    load("/studentiXclassi").then((data2) => {
-      load("/valutazioniXmaterie").then((data3) => {
+  load("/materieXclassi").then((data) => { //data=materie
+    load("/studentiXclassi").then((data2) => { //data2=studenti
+      load("/valutazioniXmaterie").then((data3) => { //data3=voti
         const listaMaterie = [];
         const listaStudenti = [];
         for (let index = 0; index < data.length; index++) {
-          if (data[index].NomeClasse === classeDaProiettare) {
+          if (data[index].NomeClasse === classeDaProiettare) { //selezione delle materie per la classe selezionata
             let obj = {
               id: data[index].Id,
               materia: data[index].Materia,
@@ -82,7 +81,7 @@ function renderPagina() {
           }
         }
         for (let index = 0; index < data2.length; index++) {
-          if (data2[index].NomeClasse === classeDaProiettare) {
+          if (data2[index].NomeClasse === classeDaProiettare) { //selezione degli studenti per la classe selezionata
             let obj = {
               id: data2[index].Id,
               nome: data2[index].Nome,
@@ -99,13 +98,13 @@ function renderPagina() {
   });
 }
 
-document.getElementById("salva").onclick = () => {
+document.getElementById("salva").onclick = () => { //modifica voto
   let check = document.getElementById("voto").value % 0.25;
   if (
     document.getElementById("voto").value >= 1 &&
     document.getElementById("voto").value <= 10 &&
     check === 0
-  ) {
+  ) { //accettati i voti da 1 a 10 e con 0.25, 
     let obj = {
       studente: document.getElementById("studenti").value,
       materia: document.getElementById("materie").value,
@@ -119,7 +118,7 @@ document.getElementById("salva").onclick = () => {
   document.getElementById("voto").value = "";
 };
 
-const loginControllo = (user, pass) => {
+const loginControllo = (user, pass) => { //metodo per controllo dell'accesso
   fetch("/login", {
     method: "POST",
     headers: {
@@ -133,7 +132,7 @@ const loginControllo = (user, pass) => {
       console.log(data);
 
       if (data.result == "Unauthorized") {
-        window.location.href = "../login/login.html";
+        window.location.href = "../login/login.html"; //se non ha effettuato l'accesso, la pagina non viene visualizzata e reindirizza al login
       }
     })
     .catch((error) => {
@@ -141,7 +140,7 @@ const loginControllo = (user, pass) => {
     });
 };
 
-loginControllo(
+loginControllo( //richiamo funzione nel momento in cui si va in prof.html
   sessionStorage.getItem("username"),
   sessionStorage.getItem("password")
 );

@@ -1,10 +1,10 @@
-import { load } from "../comune.js";
+import { load } from "../comune.js"; //importazione
 
 load("/classi").then((data) => {
-  renderClassi(data, document.getElementById("listaClassi"));
+  renderClassi(data, document.getElementById("listaClassi")); //caricamento delle classi presenti dal db
 });
 
-const renderClassi = (lista, div) => {
+const renderClassi = (lista, div) => { //stampa in finestre delle card con le classi
   let output = "";
   lista.forEach((classe) => {
     let templateCard = `
@@ -24,7 +24,7 @@ const renderClassi = (lista, div) => {
   });
   div.innerHTML = output;
   // Aggiungi gestore di eventi clic
-  div.querySelectorAll(".card").forEach((card) => {
+  div.querySelectorAll(".card").forEach((card) => { //controllo per prelevare la classe premuta e inserimento nell'url
     card.addEventListener("click", () => {
       const nome = card.querySelector("h1").textContent;
       window.location.href = "./prof.html?nomeClasse=" + nome;
@@ -32,7 +32,7 @@ const renderClassi = (lista, div) => {
   });
 };
 
-const loginControllo = (user, pass) => {
+const loginControllo = (user, pass) => { //metodo per controllo dell'accesso
   fetch("/login", {
     method: "POST",
     headers: {
@@ -43,8 +43,7 @@ const loginControllo = (user, pass) => {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
-      if (data.result == "Unauthorized") {
+      if (data.result == "Unauthorized") { //se non ha effettuato l'accesso, la pagina non viene visualizzata e reindirizza al login
         window.location.href = "../login/login.html";
       }
     })
@@ -53,7 +52,7 @@ const loginControllo = (user, pass) => {
     });
 };
 
-loginControllo(
+loginControllo( //richiamo funzione nel momento in cui si va in home.html
   sessionStorage.getItem("username"),
   sessionStorage.getItem("password")
 );

@@ -1,4 +1,4 @@
-const login = (user, pass) => {
+const login = (user, pass) => { //richiamo del servizio per l'accesso
   fetch("/login", {
     method: "POST",
     headers: {
@@ -9,11 +9,11 @@ const login = (user, pass) => {
   })
     .then((response) => response.json())
     .then((data) => {
-      if (data.result == "prof") {
+      if (data.result == "prof") { //restituzione riconoscimento dell'utente prof
         sessionStorage.setItem("username", user);
         sessionStorage.setItem("password", pass);
         window.location.href = "../prof/home.html";
-      } else if (data.result == "admin") {
+      } else if (data.result == "admin") { //restituzione riconoscimento dell'utente admin
         sessionStorage.setItem("username", user);
         sessionStorage.setItem("password", pass);
         window.location.href = "../admin/admin.html";

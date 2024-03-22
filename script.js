@@ -209,12 +209,20 @@ server.listen(8090, () => {
   console.log("- server running");
 });
 
-app.get("/classi", (req, res) => {
-  //inviare
-  selectClassi().then((result) => {
-    res.json(result);
-  });
-
+app.get("/classi", (req, res) => { //futura implementazione
+  const username = req.headers.username;
+  const password = req.headers.password;
+  checkLogin(username, password) //controllo autenticazione
+    .then(() => {
+      //inviare
+      selectClassi().then((result) => {
+        res.json(result);
+      });
+    })
+    .catch(() => {
+      res.status(401); //401 è il codice http Unauthorized)
+      res.json({ result: "Unauthorized" });
+    });
 });
 
 app.get("/materieXclassi", (req, res) => {
