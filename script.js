@@ -118,10 +118,52 @@ const getClassi = () => {
   return executeQuery(sql);
 }
 
+//inserimenti studente (+tabelle fk)
 const insertStudenti_Classe = (nome, cognome) => {
   const sql = `
   INSERT INTO Studente (Nome, Cognome)
   VALUES ('${nome}', '${cognome}')
+   `;
+  return executeQuery(sql);
+}
+ 
+const insertStudenti_intoValutazione = (id) => {
+  const sql = `
+  INSERT INTO Valutazione (Studente_Id)
+  VALUES ('${id}')
+   `;
+  return executeQuery(sql);
+}
+
+const insertStudenti_intoComporre = (id) => {
+  const sql = `
+  INSERT INTO Comporre (Studente_Id)
+  VALUES ('${id}')
+   `;
+  return executeQuery(sql);
+}
+
+//inserimenti classe (+tabelle fk)
+const insertClassi_IntoStudiare = (id) => {
+  const sql = `
+  INSERT INTO Studiare (Classe_Id)
+  VALUES ('${id}')
+   `;
+  return executeQuery(sql);
+}
+
+const insertClassi_IntoInsegnare = (id) => {
+  const sql = `
+  INSERT INTO Insegnare (Classe_Id)
+  VALUES ('${id}')
+   `;
+  return executeQuery(sql);
+}
+
+const insertClassi_IntoComporre = (id) => {
+  const sql = `
+  INSERT INTO Comporre (Classe_Id)
+  VALUES ('${id}')
    `;
   return executeQuery(sql);
 }
@@ -135,6 +177,7 @@ const insertClassi = (val) => {
   return executeQuery(sql);
 };
 
+//inserimenti materia (+tabelle fk)
 const insertMateria = (mat) => {
   const sql = `
   INSERT INTO Materia (Nome)
@@ -142,6 +185,23 @@ const insertMateria = (mat) => {
          `;
   return executeQuery(sql);
 };
+
+const insertMateria_intoValutazione = (id) => {
+  const sql = `
+  INSERT INTO Valutazione (Materia_Id)
+  VALUES ('${id}')
+         `;
+  return executeQuery(sql);
+};
+
+const insertMateria_intoStudiare = (id) => {
+  const sql = `
+  INSERT INTO Studiare (Materia_Id)
+  VALUES ('${id}')
+         `;
+  return executeQuery(sql);
+};
+
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -251,31 +311,63 @@ const checkLogin = (username, password) => {
 };
 
 /////////////////// FUNZIONI SERVER ADMIN /////////////////////////
+const ultimoIDClasse = 0;
+const ultimoIDMateria = 0;
+const ultimoIDStudente = 0;
+
 app.post("/insertClasse", (req, res) => {
   const classe = req.body.nomeClasse;
+  ultimoIDClasse = req.body.Classe_Id;
+
   console.log(classe);
   insertClassi(classe).then((response) => {
+    res.json({ result: "ok" });
+  });
+
+  insertClassi_IntoComporre(ultimoIDClasse).then((response) => {
+    res.json({ result: "ok" });
+  });
+  insertClassi_IntoInsegnare(ultimoIDClasse).then((response) => {
+    res.json({ result: "ok" });
+  });
+  insertClassi_IntoStudiare(ultimoIDClasse).then((response) => {
     res.json({ result: "ok" });
   });
 });
 
 app.post("/materieXclassi", (req, res) => {
   const materia = req.body.materia;
+  ultimoIDMateria = req.body.Materia_Id;
   console.log(materia);
   insertMateria(materia).then((result) => {
+    res.json({ result: "ok" });
+  });
+
+// scorrere array materie e classe fissa -- ?
+  insertMateria_intoStudiare(ultimoIDMateria).then((result) => {
+    res.json({ result: "ok" });
+  });
+  insertMateria_intoValutazione(ultimoIDMateria).then((result) => {
     res.json({ result: "ok" });
   });
 });
 
 app.post("/studentiXclassi", (req, res) => {
   const studenti = req.body.studenti;
+ultimoIDStudente = req.body.Studente_Id;
   console.log(studenti);
   let i = 0;
   while (i < studenti.length) {
     insertStudenti_Classe(studenti[i].nome, studenti[i].cognome).then((result) => {
       i++;
     });
-  }
+    }
+    insertStudenti_intoComporre(ultimoIDStudente).then((result) => {
+      res.json({ result: "ok" });
+    });
+    insertStudenti_intoValutazione(ultimoIDStudente).then((result) => {
+      res.json({ result: "ok" });
+    });
 });
 
 app.get("/getClassi",(req, res) => {
